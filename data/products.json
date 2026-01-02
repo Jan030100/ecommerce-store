@@ -1,0 +1,57 @@
+[
+    {
+        "id" : 1,
+        "name" : "Wireless Bluetoth Headphones",
+        "price" : 139.99,
+        "category": "Electronics",
+        "description" : "Hight quality wireless headphones",
+        "image" : "/images/headphones.jpg"
+    },
+
+    {
+        "id" : 2,
+        "name" : "Cotton T-Shirt",
+        "price" : 24.99,
+        "category": "Clothing",
+        "description" : "Comfortable Cotton T-Shirt",
+        "image" : "/images/tshirt.jpg"
+    },
+
+    {
+        "id" : 3,
+        "name" : "Running Shoes",
+        "price" : 129.99,
+        "category": "Shoes",
+        "description" : "Men's Road Running Shoes.",
+        "image" : "/images/shoes.jpg"
+    },
+
+    {
+        "id" : 4,
+        "name" : "Smart Watch",
+        "price" : 99.99,
+        "category": "Electronics",
+        "description" : "Smartwatch with health tracking",
+        "image" : "/images/smartwatch.jpg"
+    },
+
+    {
+        "id" : 5,
+        "name" : "Denim Jacket",
+        "price" : 49.99,
+        "category": "Clothing",
+        "description" : "Mens Jean Jacket Soft Cotton Denim Jacket",
+        "image" : "/images/jacket.jpg"
+    },
+
+    {
+        "id" : 6,
+        "name" : "Casual Sneakers",
+        "price" : 89.99,
+        "category": "Shoes",
+        "description" : "Men's Vegan Leather Fashion Sneakers-Bruno",
+        "image" : "/images/sneakers.jpg"
+    }
+
+]
+
