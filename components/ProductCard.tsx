@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Product } from "@/types";
+import { addToCart } from "@/lib/cart";
 
 interface ProductCardProps {
   product: Product;
@@ -11,8 +12,18 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { name, price, category, description, image } = product;
 
   const handleAddToCart = () => {
-    alert(`Added ${name} to cart!`);
+       const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1
+    
   };
+
+  addToCart(cartItem);
+
+  window.location.reload();};
 
   return (
     <div className="bg-white rounded-lg border p-4 shadow-sm">
