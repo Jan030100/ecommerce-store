@@ -23,8 +23,3 @@ export interface CartState {
 export type Category = 'All' | 'Electronics' | 'Clothing' | 'Shoes';
 
 export type PriceRange = 'All' | 'Under50' | '50to100' | 'Over100';
-
-export interface FilterState {
-    category: Category;
-  priceRange: PriceRange;
-}
