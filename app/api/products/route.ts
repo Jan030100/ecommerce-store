@@ -9,6 +9,25 @@ export async function GET (request :NextRequest) {
         const searchParams = request.nextUrl.searchParams;
         const category = searchParams.get('category');
         const priceRange = searchParams.get('priceRange');
+        const id = searchParams.get('id');
+
+        if(id){
+            const productId = parseInt(id);
+            const product = productsData.find(p=>p.id === productId);
+
+            if(product){
+                return NextResponse.json ({
+                    success: true,
+                    data: product
+                },{status:200});
+            }
+            else{
+                     return NextResponse.json ({
+            success: false,
+            error: 'Product not found'
+        }, {status: 404});
+            }
+        }
 
         let filteredProducts: Product[]=[...productsData];
 

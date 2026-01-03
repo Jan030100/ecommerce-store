@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { Product } from "@/types";
 import { addToCart } from "@/lib/cart";
+import Link from "next/link";
+import React from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -11,7 +13,10 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { name, price, category, description, image } = product;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     const cartItem = {
       id: product.id,
       name: product.name,
@@ -33,6 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
+    <Link href={`/product/${product.id}`} className="block">
     <div className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="relative h-48 mb-4">
         <Image 
@@ -65,5 +71,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
     </div>
+    </Link>
   );
 }
