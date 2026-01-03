@@ -9,6 +9,7 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [products, setProducts] = useState<Product[]>([]);  
   const [loading, setLoading] = useState(true);
+  const [selectdPrice, setSelectedPrice] = useState('All');
 
   useEffect(() => {
     async function loadProducts() {
@@ -26,9 +27,20 @@ export default function HomePage() {
     loadProducts();
   }, []);
 
-  const filteredProducts = selectedCategory === 'All' 
-    ? products 
-    : products.filter(p => p.category === selectedCategory);
+const filteredProducts = products.filter(product=>{
+     const categoryMatch = selectedCategory === 'All' || product.category === selectedCategory;
+     let priceMatch = true;
+     if(selectdPrice === 'Under50'){
+      priceMatch = product.price < 50;
+     }
+    else if(selectdPrice === '50to100'){
+      priceMatch = product.price >= 50 && product.price <=100;
+}
+    else if(selectdPrice === 'Over100'){
+      priceMatch = product.price >= 100;
+}
+return categoryMatch && priceMatch;
+});
 
   if (loading) {
     return (
@@ -75,6 +87,30 @@ export default function HomePage() {
             className={`px-3 py-1 text-sm rounded ${selectedCategory === 'Shoes' ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}
           >
             Shoes
+          </button>
+        </div>
+        <div className='flex gap-2 mb-4'>
+          <button onClick={()=> setSelectedPrice('All')}
+                    className={`px-3 py-1 text-sm rounded ${selectdPrice === 'All' ? 'bg-gray-800 text-white' : 'bg-gray-200'}`}
+          > All Prices</button>
+          <button 
+            onClick={() => setSelectedPrice('Under50')}
+            className={`px-3 py-1 text-sm rounded ${selectdPrice === 'Under50' ? 'bg-yellow-600 text-white' : 'bg-gray-200'}`}
+          >
+            Under $50
+          </button>
+            <button 
+            onClick={() => setSelectedPrice('50to100')}
+            className={`px-3 py-1 text-sm rounded ${selectdPrice === '50to100' ? 'bg-orange-600 text-white' : 'bg-gray-200'}`}
+          >
+            $50 - $100
+          </button>
+
+             <button 
+            onClick={() => setSelectedPrice('Over100')}
+            className={`px-3 py-1 text-sm rounded ${selectdPrice === 'Over100' ? 'bg-red-600 text-white' : 'bg-gray-200'}`}
+          >
+            Over $100
           </button>
         </div>
       </div>
