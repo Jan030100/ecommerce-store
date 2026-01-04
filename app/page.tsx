@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Product } from "@/types"
+import SearchBox from '@/components/SearchBox';
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string[]>(['All']);
   const [products, setProducts] = useState<Product[]>([]);  
   const [loading, setLoading] = useState(true);
   const [selectdPrice, setSelectedPrice] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     async function loadProducts() {
@@ -42,6 +44,10 @@ export default function HomePage() {
     }
   };
 
+   const handleSearch = (query: string) => {
+    setSearchQuery(query.toLowerCase());
+  };
+
   const filteredProducts = products.filter(product=>{
      const categoryMatch = selectedCategory.includes('All') || 
               selectedCategory.includes(product.category);
@@ -56,7 +62,10 @@ export default function HomePage() {
     else if(selectdPrice === 'Over100'){
       priceMatch = product.price > 100;
     }
-    return categoryMatch && priceMatch;
+       const searchMatch = !searchQuery || 
+                       product.name.toLowerCase().includes(searchQuery) ||
+                       product.description.toLowerCase().includes(searchQuery);
+    return categoryMatch && priceMatch && searchMatch;
   });
 
   if (loading) {
@@ -76,9 +85,15 @@ export default function HomePage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">Products</h1>
+
+        <div className="mb-6 max-w-md">
+          <SearchBox onSearch={handleSearch} />
+        </div>
+
         <p className="text-gray-600 mb-4">
           {filteredProducts.length} products available
           {selectedCategory[0] !== 'All' && ` (${selectedCategory.join(', ')})`}
+          {searchQuery && ` - searching: "${searchQuery}"`}
         </p>
         
         <div className="flex gap-2 mb-4">
@@ -175,7 +190,7 @@ export default function HomePage() {
                   : 'bg-gray-100 text-gray-600'
               }`}
             >
-              {category} {selectedCategory.includes(category) && '✓'}
+              {category} {selectedCategory.includes(category)}
             </span>
           ))}
         </div>

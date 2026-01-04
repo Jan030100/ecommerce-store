@@ -60,8 +60,8 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="flex flex-col flex-grow">
-        <h3 className="font-bold text-lg mb-1 flex-shrink-0">{name}</h3>
-        <p className="font-bold text-lg mb-1 flex-shrink-0">{description}</p>
+        <h3 className="font-bold text-lg mb-2 text-gray-800">{name}</h3>
+         <p className="text-gray-600 text-xs mb-4 line-clamp-2 flex-grow leading-relaxed">{description}</p>
         
         <div className="flex justify-between items-center mt-auto pt-3 flex-shrink-0">
           <div className="text-xl font-bold">${price.toFixed(2)}</div>
