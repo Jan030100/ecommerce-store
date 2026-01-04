@@ -6,7 +6,7 @@ import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Product } from "@/types"
 
 export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(['All']);
   const [products, setProducts] = useState<Product[]>([]);  
   const [loading, setLoading] = useState(true);
   const [selectdPrice, setSelectedPrice] = useState('All');
@@ -27,20 +27,37 @@ export default function HomePage() {
     loadProducts();
   }, []);
 
-const filteredProducts = products.filter(product=>{
-     const categoryMatch = selectedCategory === 'All' || product.category === selectedCategory;
+  const handleCategoryClick = (category: string) => {
+    if (category === 'All') {
+      setSelectedCategory(['All']);
+    } else {
+      const newCategories = selectedCategory.filter(c => c !== 'All');
+      
+      if (newCategories.includes(category)) {
+        const updated = newCategories.filter(c => c !== category);
+        setSelectedCategory(updated.length > 0 ? updated : ['All']);
+      } else {
+        setSelectedCategory([...newCategories, category]);
+      }
+    }
+  };
+
+  const filteredProducts = products.filter(product=>{
+     const categoryMatch = selectedCategory.includes('All') || 
+              selectedCategory.includes(product.category);
+     
      let priceMatch = true;
      if(selectdPrice === 'Under50'){
       priceMatch = product.price < 50;
      }
     else if(selectdPrice === '50to100'){
       priceMatch = product.price >= 50 && product.price <=100;
-}
+    }
     else if(selectdPrice === 'Over100'){
-      priceMatch = product.price >= 100;
-}
-return categoryMatch && priceMatch;
-});
+      priceMatch = product.price > 100;
+    }
+    return categoryMatch && priceMatch;
+  });
 
   if (loading) {
     return (
@@ -61,34 +78,36 @@ return categoryMatch && priceMatch;
         <h1 className="text-2xl font-bold mb-2">Products</h1>
         <p className="text-gray-600 mb-4">
           {filteredProducts.length} products available
+          {selectedCategory[0] !== 'All' && ` (${selectedCategory.join(', ')})`}
         </p>
         
         <div className="flex gap-2 mb-4">
           <button 
-            onClick={() => setSelectedCategory('All')}
-            className={`px-3 py-1 text-sm rounded ${selectedCategory === 'All' ? 'bg-gray-800 text-white' : 'bg-gray-200'}`}
+            onClick={() => handleCategoryClick('All')}
+            className={`px-3 py-1 text-sm rounded ${selectedCategory.includes('All') ? 'bg-gray-800 text-white' : 'bg-gray-200'}`}
           >
             All
           </button>
           <button 
-            onClick={() => setSelectedCategory('Electronics')}
-            className={`px-3 py-1 text-sm rounded ${selectedCategory === 'Electronics' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => handleCategoryClick('Electronics')}
+            className={`px-3 py-1 text-sm rounded ${selectedCategory.includes('Electronics') ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
           >
-            Electronics
+            Electronics {selectedCategory.includes('Electronics') }
           </button>
           <button 
-            onClick={() => setSelectedCategory('Clothing')}
-            className={`px-3 py-1 text-sm rounded ${selectedCategory === 'Clothing' ? 'bg-green-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => handleCategoryClick('Clothing')}
+            className={`px-3 py-1 text-sm rounded ${selectedCategory.includes('Clothing') ? 'bg-green-600 text-white' : 'bg-gray-200'}`}
           >
-            Clothing
+            Clothing {selectedCategory.includes('Clothing') }
           </button>
           <button 
-            onClick={() => setSelectedCategory('Shoes')}
-            className={`px-3 py-1 text-sm rounded ${selectedCategory === 'Shoes' ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => handleCategoryClick('Shoes')}
+            className={`px-3 py-1 text-sm rounded ${selectedCategory.includes('Shoes') ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}
           >
-            Shoes
+            Shoes {selectedCategory.includes('Shoes') }
           </button>
         </div>
+        
         <div className='flex gap-2 mb-4'>
           <button onClick={()=> setSelectedPrice('All')}
                     className={`px-3 py-1 text-sm rounded ${selectdPrice === 'All' ? 'bg-gray-800 text-white' : 'bg-gray-200'}`}
@@ -113,11 +132,28 @@ return categoryMatch && priceMatch;
             Over $100
           </button>
         </div>
+        
+        {selectedCategory[0] !== 'All' && (
+          <button 
+            onClick={() => setSelectedCategory(['All'])}
+            className="text-sm text-blue-600 hover:text-blue-800 mb-4"
+          >
+            Clear category filter
+          </button>
+        )}
       </div>
 
       {filteredProducts.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500">No products found.</p>
+          <button 
+            onClick={() => {
+              setSelectedCategory(['All']);
+              setSelectedPrice('All');
+            }}
+            className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-black">
+              Clear all filters
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -133,9 +169,13 @@ return categoryMatch && priceMatch;
           {Array.from(new Set(products.map(p => p.category))).map((category) => (
             <span
               key={category}
-              className="px-3 py-1 bg-gray-100 rounded-full text-sm"
+              className={`px-3 py-1 rounded-full text-sm ${
+                selectedCategory.includes(category) 
+                  ? 'bg-blue-100 text-blue-800' 
+                  : 'bg-gray-100 text-gray-600'
+              }`}
             >
-              {category}
+              {category} {selectedCategory.includes(category) && '✓'}
             </span>
           ))}
         </div>

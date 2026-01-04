@@ -39,32 +39,35 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/product/${product.id}`} className="block">
-    <div className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
       <div className="relative h-48 mb-4">
+         <div className="relative h-48 w-full">
         <Image 
           src={image} 
           alt={name} 
           fill 
-          className="object-cover rounded"
+          className="object-contain rounded"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={false}
         />
       </div>
+    </div>
 
-      <div className="mb-2">
+      <div className="mb-2 flex-shrink-0">
         <span className={`px-2 py-1 rounded text-xs ${getCategoryColor()}`}>
           {category}
         </span>
       </div>
 
-      <div>
-        <h3 className="font-bold text-lg mb-1">{name}</h3>
-        <p className="text-gray-600 text-sm mb-3">{description}</p>
+      <div className="flex flex-col flex-grow">
+        <h3 className="font-bold text-lg mb-1 flex-shrink-0">{name}</h3>
+        <p className="font-bold text-lg mb-1 flex-shrink-0">{description}</p>
         
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-auto pt-3 flex-shrink-0">
           <div className="text-xl font-bold">${price.toFixed(2)}</div>
           <button 
             onClick={handleAddToCart}
-            className="px-4 py-2 bg-gray-800 text-white text-sm rounded hover:bg-black"
+            className="px-4 py-2 bg-gray-800 text-white text-sm rounded hover:bg-black transition-colors"
           >
             Add to Cart
           </button>
