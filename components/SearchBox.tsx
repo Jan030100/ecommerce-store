@@ -1,7 +1,6 @@
 'use client'
 
 import { useState,useEffect } from "react";
-import Image from "next/image";
 import { Search } from "lucide-react";
 
 interface SearchBoxProps  {
@@ -32,6 +31,10 @@ useEffect(()=>{
   const handleClear = () => {
     setQuery('');
   };
+
+    useEffect(() => {
+    setQuery(initialValue);
+  }, [initialValue]);
 
   return (
     <div className="w-full">
