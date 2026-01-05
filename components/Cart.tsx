@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { CartItem, CartState } from '@/types';
+import type { CartItem, CartState } from '@/types';
 import { getCart, removeFromCart, updateQuantity, clearCart } from '@/lib/cart';
 
 interface CartProps {
